@@ -58,14 +58,14 @@ import LogoTradeHub from '../imports/LogoTradeHub';
 
 ## 📐 Tamanhos Recomendados
 
-| Local | Largura | Altura | Classe Tailwind |
-|-------|---------|--------|-----------------|
-| Login | 192px | 24px | `w-48 h-6` |
-| Sidebar | 128px | 16px | `w-32 h-4` |
-| Header | 160px | 20px | `w-40 h-5` |
-| Footer | 128px | 16px | `w-32 h-4` |
+| Local | Largura | Altura | Classe Tailwind | Proporção |
+|-------|---------|--------|-----------------|-----------|
+| Login | 192px | 32px | `w-48 h-8` | ✅ 6:1 |
+| Sidebar | 128px | 20px | `w-32 h-5` | ✅ 6.4:1 |
+| Header | 160px | 24px | `w-40 h-6` | ✅ 6.67:1 |
+| Footer | 128px | 20px | `w-32 h-5` | ✅ 6.4:1 |
 
-**Importante:** A logo tem proporção fixa (1043:167), então mantenha essa relação de aspecto!
+**Importante:** A logo tem proporção fixa (1043:167 ≈ **6.24:1**), então mantenha essa relação de aspecto!
 
 ---
 
@@ -94,12 +94,12 @@ Relação de aspecto: **~6.24:1** (largura é ~6.24x a altura)
 
 ### **Tela de Login:**
 - ✅ Logo centralizada abaixo do ícone espacial
-- ✅ Tamanho: 192x24px (w-48 h-6)
+- ✅ Tamanho: 192x32px (w-48 h-8)
 - ✅ Cor: Preta padrão (#0B0C0C)
 
 ### **Sidebar (Menu Lateral):**
 - ✅ Logo no topo ao lado do ícone
-- ✅ Tamanho: 128x16px (w-32 h-4)
+- ✅ Tamanho: 128x20px (w-32 h-5)
 - ✅ Cor: Preta no modo claro, preta no modo escuro
 - ✅ Texto abaixo: "Portal da Equipe"
 
@@ -113,7 +113,7 @@ Se você tinha código usando a logo antiga:
 ```tsx
 import LogoTradestarsPreta1 from '../imports/LogoTradestarsPreta1';
 
-<div className="w-48 h-8">
+<div className="w-48 h-6">
   <LogoTradestarsPreta1 />
 </div>
 ```
@@ -122,12 +122,12 @@ import LogoTradestarsPreta1 from '../imports/LogoTradestarsPreta1';
 ```tsx
 import LogoTradeHub from '../imports/LogoTradeHub';
 
-<div className="w-48 h-6">
+<div className="w-48 h-8">
   <LogoTradeHub />
 </div>
 ```
 
-**Observação:** A altura mudou de `h-8` para `h-6` para respeitar melhor a proporção da nova logo.
+**Observação:** A altura foi corrigida para `h-8` para respeitar a proporção correta de 6.24:1 da logo TradeHub.
 
 ---
 

@@ -122,7 +122,7 @@ export function Sidebar({ darkMode, setDarkMode, sidebarOpen, setSidebarOpen }: 
               </div>
             </div>
             <div className="flex flex-col gap-0.5">
-              <div className="w-32 h-4">
+              <div className="w-32 h-5">
                 <LogoTradeHub />
               </div>
               <p className="text-xs text-gray-500 dark:text-gray-400">Portal da Equipe</p>
