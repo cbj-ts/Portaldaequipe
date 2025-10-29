@@ -1207,10 +1207,6 @@
     width: calc(var(--spacing) * 24);
   }
 
-  .w-32 {
-    width: calc(var(--spacing) * 32);
-  }
-
   .w-56 {
     width: calc(var(--spacing) * 56);
   }
@@ -6055,6 +6051,14 @@
   .\[\&_p\]\:leading-relaxed p {
     --tw-leading: var(--leading-relaxed);
     line-height: var(--leading-relaxed);
+  }
+
+  .\[\&_path\]\:fill-black path {
+    fill: var(--color-black);
+  }
+
+  .dark\:\[\&_path\]\:fill-white:is(.dark *) path {
+    fill: var(--color-white);
   }
 
   .\[\&_svg\]\:pointer-events-none svg {
