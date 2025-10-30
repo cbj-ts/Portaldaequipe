@@ -1,9 +1,9 @@
 /**
  * ============================================================================
- * AUTH CONTEXT - Gerenciamento de Autenticação MongoDB
+ * AUTH CONTEXT - Gerenciamento de Autenticação
  * ============================================================================
  * 
- * Contexto para gerenciar autenticação de usuários com MongoDB
+ * Contexto para gerenciar autenticação de usuários
  * 
  * IMPORTANTE:
  * - Este é um exemplo básico de autenticação
@@ -14,8 +14,16 @@
  */
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import type { UserProfile } from '../models/User';
-import { ObjectId } from 'mongodb';
+
+interface UserProfile {
+  _id: string;
+  nome: string;
+  email: string;
+  setor: string;
+  cargo?: string;
+  telefone?: string;
+  avatar?: string;
+}
 
 interface AuthContextType {
   user: UserProfile | null;
@@ -39,10 +47,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const savedUser = localStorage.getItem('tradestars_user');
         if (savedUser) {
           const parsedUser = JSON.parse(savedUser);
-          // Reconstruir ObjectId
-          if (parsedUser._id) {
-            parsedUser._id = new ObjectId(parsedUser._id);
-          }
           setUser(parsedUser);
         }
       } catch (error) {
@@ -58,27 +62,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, senha: string): Promise<boolean> => {
     try {
-      // NOTA: Esta é uma chamada de exemplo
-      // Em produção, você deve fazer uma requisição para sua API
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, senha })
-      });
-
-      if (!response.ok) {
-        return false;
-      }
-
-      const userData: UserProfile = await response.json();
+      // Simulação de login para demonstração
+      // Em produção, faça uma chamada real à API
+      const mockUser: UserProfile = {
+        _id: '1',
+        nome: 'Usuário Demo',
+        email: email,
+        setor: 'TEI',
+        cargo: 'Desenvolvedor',
+      };
       
       // Salvar no localStorage
-      localStorage.setItem('tradestars_user', JSON.stringify({
-        ...userData,
-        _id: userData._id.toString() // Converter ObjectId para string
-      }));
-      
-      setUser(userData);
+      localStorage.setItem('tradestars_user', JSON.stringify(mockUser));
+      setUser(mockUser);
       return true;
     } catch (error) {
       console.error('Erro no login:', error);
@@ -98,10 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(updatedUser);
     
     // Atualizar no localStorage
-    localStorage.setItem('tradestars_user', JSON.stringify({
-      ...updatedUser,
-      _id: updatedUser._id.toString()
-    }));
+    localStorage.setItem('tradestars_user', JSON.stringify(updatedUser));
   };
 
   return (

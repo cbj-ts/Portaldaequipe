@@ -3,14 +3,28 @@
  * HOOK: useChamados
  * ============================================================================
  * 
- * Hook customizado para gerenciar chamados
+ * Hook customizado para gerenciar chamados usando localStorage
  * 
  * ============================================================================
  */
 
 import { useState, useEffect } from 'react';
-import type { Chamado, SetorChamado } from '../models/Chamado';
-import { ObjectId } from 'mongodb';
+
+type SetorChamado = 'TEI' | 'RH' | 'Financeiro';
+
+interface Chamado {
+  id: string;
+  numero: string;
+  setor: SetorChamado;
+  titulo: string;
+  descricao: string;
+  status: string;
+  prioridade: string;
+  solicitanteNome: string;
+  solicitanteSetor: string;
+  dataCriacao: string;
+  dataAtualizacao: string;
+}
 
 interface UseChamadosOptions {
   setor?: SetorChamado;
@@ -29,19 +43,19 @@ export function useChamados(options: UseChamadosOptions = {}) {
     setError(null);
     
     try {
-      const params = new URLSearchParams();
-      if (options.setor) params.append('setor', options.setor);
-      if (options.status) params.append('status', options.status);
-      if (options.usuarioId) params.append('usuarioId', options.usuarioId);
+      // Carregar do localStorage
+      const storedChamados = localStorage.getItem('tradestars_chamados');
+      let allChamados: Chamado[] = storedChamados ? JSON.parse(storedChamados) : [];
       
-      const response = await fetch(`/api/chamados?${params.toString()}`);
-      
-      if (!response.ok) {
-        throw new Error('Erro ao carregar chamados');
+      // Aplicar filtros
+      if (options.setor) {
+        allChamados = allChamados.filter(c => c.setor === options.setor);
+      }
+      if (options.status) {
+        allChamados = allChamados.filter(c => c.status === options.status);
       }
       
-      const data = await response.json();
-      setChamados(data);
+      setChamados(allChamados);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro desconhecido');
       console.error('Erro ao carregar chamados:', err);
@@ -52,18 +66,21 @@ export function useChamados(options: UseChamadosOptions = {}) {
 
   const createChamado = async (data: any) => {
     try {
-      const response = await fetch('/api/chamados', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
+      const storedChamados = localStorage.getItem('tradestars_chamados');
+      const allChamados: Chamado[] = storedChamados ? JSON.parse(storedChamados) : [];
       
-      if (!response.ok) {
-        throw new Error('Erro ao criar chamado');
-      }
+      const novoChamado: Chamado = {
+        id: Date.now().toString(),
+        numero: `${data.setor}-${new Date().getFullYear()}-${String(allChamados.length + 1).padStart(3, '0')}`,
+        ...data,
+        dataCriacao: new Date().toISOString(),
+        dataAtualizacao: new Date().toISOString(),
+      };
       
-      const novoChamado = await response.json();
+      const updatedChamados = [novoChamado, ...allChamados];
+      localStorage.setItem('tradestars_chamados', JSON.stringify(updatedChamados));
       setChamados(prev => [novoChamado, ...prev]);
+      
       return novoChamado;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao criar chamado');
@@ -73,16 +90,16 @@ export function useChamados(options: UseChamadosOptions = {}) {
 
   const updateChamado = async (id: string, data: any) => {
     try {
-      const response = await fetch(`/api/chamados/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
+      const storedChamados = localStorage.getItem('tradestars_chamados');
+      const allChamados: Chamado[] = storedChamados ? JSON.parse(storedChamados) : [];
       
-      if (!response.ok) {
-        throw new Error('Erro ao atualizar chamado');
-      }
+      const updatedChamados = allChamados.map(c => 
+        c.id === id 
+          ? { ...c, ...data, dataAtualizacao: new Date().toISOString() }
+          : c
+      );
       
+      localStorage.setItem('tradestars_chamados', JSON.stringify(updatedChamados));
       await loadChamados();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao atualizar chamado');
@@ -92,17 +109,11 @@ export function useChamados(options: UseChamadosOptions = {}) {
 
   const addResposta = async (chamadoId: string, mensagem: string, anexos?: any[]) => {
     try {
-      const response = await fetch(`/api/chamados/${chamadoId}/respostas`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mensagem, anexos })
+      // Implementação simplificada
+      await updateChamado(chamadoId, {
+        ultimaResposta: mensagem,
+        dataAtualizacao: new Date().toISOString(),
       });
-      
-      if (!response.ok) {
-        throw new Error('Erro ao adicionar resposta');
-      }
-      
-      await loadChamados();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao adicionar resposta');
       throw err;

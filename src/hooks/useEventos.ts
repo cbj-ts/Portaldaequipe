@@ -3,13 +3,26 @@
  * HOOK: useEventos
  * ============================================================================
  * 
- * Hook customizado para gerenciar eventos do calendário
+ * Hook customizado para gerenciar eventos do calendário usando localStorage
  * 
  * ============================================================================
  */
 
 import { useState, useEffect } from 'react';
-import type { Evento } from '../models/Evento';
+
+interface Evento {
+  _id?: string;
+  id: string;
+  titulo: string;
+  descricao?: string;
+  dataInicio: string;
+  dataFim?: string;
+  tipo: string;
+  local?: string;
+  participantes?: string[];
+  criadorId: string;
+  criadorNome: string;
+}
 
 interface UseEventosOptions {
   mes?: number;
@@ -28,19 +41,19 @@ export function useEventos(options: UseEventosOptions = {}) {
     setError(null);
     
     try {
-      const params = new URLSearchParams();
-      if (options.mes) params.append('mes', options.mes.toString());
-      if (options.ano) params.append('ano', options.ano.toString());
-      if (options.usuarioId) params.append('usuarioId', options.usuarioId);
+      // Carregar do localStorage
+      const storedEventos = localStorage.getItem('tradestars_eventos');
+      let allEventos: Evento[] = storedEventos ? JSON.parse(storedEventos) : [];
       
-      const response = await fetch(`/api/eventos?${params.toString()}`);
-      
-      if (!response.ok) {
-        throw new Error('Erro ao carregar eventos');
+      // Aplicar filtros
+      if (options.mes !== undefined && options.ano !== undefined) {
+        allEventos = allEventos.filter(e => {
+          const data = new Date(e.dataInicio);
+          return data.getMonth() === options.mes && data.getFullYear() === options.ano;
+        });
       }
       
-      const data = await response.json();
-      setEventos(data);
+      setEventos(allEventos);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro desconhecido');
       console.error('Erro ao carregar eventos:', err);
@@ -51,18 +64,19 @@ export function useEventos(options: UseEventosOptions = {}) {
 
   const createEvento = async (data: any) => {
     try {
-      const response = await fetch('/api/eventos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
+      const storedEventos = localStorage.getItem('tradestars_eventos');
+      const allEventos: Evento[] = storedEventos ? JSON.parse(storedEventos) : [];
       
-      if (!response.ok) {
-        throw new Error('Erro ao criar evento');
-      }
+      const novoEvento: Evento = {
+        id: Date.now().toString(),
+        _id: Date.now().toString(),
+        ...data,
+      };
       
-      const novoEvento = await response.json();
+      const updatedEventos = [...allEventos, novoEvento];
+      localStorage.setItem('tradestars_eventos', JSON.stringify(updatedEventos));
       setEventos(prev => [...prev, novoEvento]);
+      
       return novoEvento;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao criar evento');
@@ -72,16 +86,14 @@ export function useEventos(options: UseEventosOptions = {}) {
 
   const updateEvento = async (id: string, data: any) => {
     try {
-      const response = await fetch(`/api/eventos/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
+      const storedEventos = localStorage.getItem('tradestars_eventos');
+      const allEventos: Evento[] = storedEventos ? JSON.parse(storedEventos) : [];
       
-      if (!response.ok) {
-        throw new Error('Erro ao atualizar evento');
-      }
+      const updatedEventos = allEventos.map(e => 
+        (e.id === id || e._id === id) ? { ...e, ...data } : e
+      );
       
+      localStorage.setItem('tradestars_eventos', JSON.stringify(updatedEventos));
       await loadEventos();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao atualizar evento');
@@ -91,15 +103,12 @@ export function useEventos(options: UseEventosOptions = {}) {
 
   const deleteEvento = async (id: string) => {
     try {
-      const response = await fetch(`/api/eventos/${id}`, {
-        method: 'DELETE'
-      });
+      const storedEventos = localStorage.getItem('tradestars_eventos');
+      const allEventos: Evento[] = storedEventos ? JSON.parse(storedEventos) : [];
       
-      if (!response.ok) {
-        throw new Error('Erro ao deletar evento');
-      }
-      
-      setEventos(prev => prev.filter(e => e._id?.toString() !== id));
+      const updatedEventos = allEventos.filter(e => e.id !== id && e._id !== id);
+      localStorage.setItem('tradestars_eventos', JSON.stringify(updatedEventos));
+      setEventos(prev => prev.filter(e => e._id?.toString() !== id && e.id !== id));
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao deletar evento');
       throw err;

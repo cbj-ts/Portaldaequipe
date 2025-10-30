@@ -81,7 +81,7 @@ export function LoginPage() {
               </div>
             </div>
             
-            <div className="w-36 h-6">
+            <div className="w-48 h-8">
               <LogoTradeHub />
             </div>
             
