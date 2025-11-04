@@ -105,7 +105,7 @@ export function AvaliacaoColaboradorPage({
     islider: true,
   };
 
-  // Simular dados (em produção viria do Supabase)
+  // Dados mockados para demonstração
   useEffect(() => {
     const mockColaboradores: Colaborador[] = [
       {
@@ -172,7 +172,7 @@ export function AvaliacaoColaboradorPage({
   const handleSelecionarColaborador = (colaborador: Colaborador) => {
     setColaboradorSelecionado(colaborador);
     setCurrentPage("perfil");
-    // Em produção: carregar avisos do Supabase
+    // Avisos mockados
     const mockAvisos: Aviso[] = [
       {
         id: "1",
@@ -233,7 +233,7 @@ export function AvaliacaoColaboradorPage({
       return;
     }
 
-    // Em produção: enviar para Supabase
+    // Log da avaliação
     console.log("Avaliação enviada:", {
       avaliado: colaboradorSelecionado,
       dados: avaliacaoData,
@@ -249,7 +249,7 @@ export function AvaliacaoColaboradorPage({
       return;
     }
 
-    // Em produção: enviar para Supabase
+    // Log do aviso
     console.log("Aviso enviado:", {
       ...novoAviso,
       arquivos: arquivosAviso,

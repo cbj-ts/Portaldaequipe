@@ -57,7 +57,7 @@ import {
 // ============================================================================
 // ARMAZENAMENTO LOCAL
 // ============================================================================
-// Usando localStorage até migração para MongoDB
+// Sistema de persistência usando localStorage
 // Ver: /utils/localStorage.ts
 
 type EventType = "Treinamento" | "Reunião" | "Live" | "Workshop" | "Evento" | "Aniversário" | "Feriado";

@@ -21,7 +21,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { PageHeader, SectionCard, StatusBadge } from '../common';
 import { Badge } from '../ui/badge';
 
-// Mock de dados - substituir por dados reais da API/Supabase
+// Dados mockados para demonstração
 const mockChamadosTEI = [
   { id: 1, titulo: 'Erro no sistema de integração', prioridade: 'alta', status: 'em_andamento', solicitante: 'Maria Santos', dataAbertura: '2025-01-10', tempoDecorrido: '2h' },
   { id: 2, titulo: 'Atualização de ferramenta', prioridade: 'media', status: 'concluido', solicitante: 'Pedro Lima', dataAbertura: '2025-01-08', tempoConclusao: '4h' },

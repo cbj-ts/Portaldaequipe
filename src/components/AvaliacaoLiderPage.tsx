@@ -45,7 +45,7 @@ export function AvaliacaoLiderPage({ onBack }: AvaliacaoLiderPageProps) {
     feedback: ''
   });
 
-  // Simular dados (em produção viria do Supabase)
+  // Dados mockados para demonstração
   useEffect(() => {
     const mockLideres: Lider[] = [
       {
@@ -167,7 +167,7 @@ export function AvaliacaoLiderPage({ onBack }: AvaliacaoLiderPageProps) {
       return;
     }
 
-    // Em produção: enviar para Supabase
+    // Log da avaliação
     console.log('Avaliação de líder enviada:', {
       lider: liderSelecionado,
       dados: avaliacaoData

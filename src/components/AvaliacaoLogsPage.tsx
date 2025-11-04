@@ -91,7 +91,7 @@ export function AvaliacaoLogsPage() {
   const [filtroDataFim, setFiltroDataFim] = useState<string>('');
   const [busca, setBusca] = useState<string>('');
 
-  // Mock de dados - em produção virá do Supabase/MongoDB
+  // Dados mockados para demonstração
   const logs: LogItem[] = [
     {
       id: '1',

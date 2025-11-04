@@ -7,7 +7,7 @@
  * - 3 etapas: Sala/Data → Horários → Confirmação
  * - Visualização de todos os agendamentos
  * - Filtros avançados
- * - Integração com Supabase
+ * - Persistência local
  * - Relógio 24h visual
  * - Responsivo
  * 

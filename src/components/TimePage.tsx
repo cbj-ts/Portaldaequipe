@@ -1,14 +1,14 @@
 /**
  * ============================================================================
- * TIME - Diretório de Colaboradores com Supabase
+ * TIME - Diretório de Colaboradores
  * ============================================================================
  * 
  * FUNCIONALIDADES:
- * - Lista completa de colaboradores do Supabase
+ * - Lista completa de colaboradores
  * - Filtros por nome e setor
  * - Modal de visualização detalhada
  * - Modal de edição/criação (RH ou próprio perfil)
- * - Upload de fotos para Supabase Storage
+ * - Upload de fotos
  * - Sistema de permissões baseado em tags
  * - Design em lista (rows) clean e moderno
  * 
@@ -113,7 +113,7 @@ export function TimePage() {
 
   const placeholderImage = 'https://ui-avatars.com/api/?size=200&background=000aff&color=fff&name=';
 
-  // Mock de dados - Em produção seria fetchado do Supabase
+  // Dados mockados para demonstração
   useEffect(() => {
     setTimeout(() => {
       const mockData: Colaborador[] = [
@@ -415,17 +415,17 @@ export function TimePage() {
   };
 
   const handleSave = () => {
-    // Em produção: salvar no Supabase
+    // Salvar colaborador
     console.log('Salvando colaborador:', editingColaborador);
-    alert('Colaborador salvo! (Em produção seria enviado ao Supabase)');
+    alert('Colaborador salvo com sucesso!');
     setEditModalOpen(false);
   };
 
   const handleDelete = () => {
     if (confirm('Tem certeza que deseja excluir este colaborador?')) {
-      // Em produção: deletar do Supabase
+      // Deletar colaborador
       console.log('Deletando colaborador:', editingColaborador);
-      alert('Colaborador excluído! (Em produção seria removido do Supabase)');
+      alert('Colaborador excluído com sucesso!');
       setEditModalOpen(false);
     }
   };

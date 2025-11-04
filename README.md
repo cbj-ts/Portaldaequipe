@@ -1,7 +1,7 @@
 
-  # Portal da Equipe Tradestars
+  # TradeHub 1
 
-  This is a code bundle for Portal da Equipe Tradestars. The original project is available at https://www.figma.com/design/V7UlyErYD3Bx3gObI0AMw0/Portal-da-Equipe-Tradestars.
+  This is a code bundle for TradeHub 1. The original project is available at https://www.figma.com/design/V7UlyErYD3Bx3gObI0AMw0/TradeHub-1.
 
   ## Running the code
 
